@@ -16,7 +16,7 @@ namespace ConsoleApp4
             while (q != 'e')
             {
                Console.Clear();
-                Console.WriteLine("Choose task: [1 - 5] (e - exit)");
+                Console.WriteLine("Choose task: [1 - 4] (e - exit)");
                 q = Console.ReadKey().KeyChar;
                 Console.WriteLine();
                 switch (q)
@@ -72,14 +72,8 @@ namespace ConsoleApp4
                         }
                         break;
                     case '4':
-                        {
-                            
+                        {                           
                             task4();
-                        }
-                        break;
-                    case '5':
-                        {
-
                         }
                         break;
                     case 'e':
@@ -164,11 +158,16 @@ namespace ConsoleApp4
 
             Console.ReadKey();
         }
-        private static void task4() 
+        private static void task4()
         {
+            double avg = 0;
+            int max = 0;
+            int min = 0;
             var list =new List<int>();
-            for(int i =0;i<1000;i++)
-                list.Add(new Random().Next(-10,100));
+            Random r = new Random();
+            for (int i =0;i<1000;i++)
+                list.Add(r.Next(-50, 101));
+            Thread.Sleep(10);
             Thread minimalValue = new Thread(() =>
             {
                 int min = list[0];
@@ -179,7 +178,7 @@ namespace ConsoleApp4
             });
             Thread maximalValue = new Thread(() =>
             {
-                int max = list[0];
+                max = list[0];
                 foreach (var value in list)
                     if (value > max)
                         max = value;
@@ -187,15 +186,27 @@ namespace ConsoleApp4
             });
             Thread averageValue = new Thread(() =>
             {               
-                int sum = 0;
+                double sum = 0;
                 foreach (var value in list)
-                  sum+= value;
-                double avg = sum/list.Count;
+                    avg += value;
+                avg /=list.Count;
                 Console.WriteLine($"Average is: {avg}");
             });
+
+            averageValue.Start();
             minimalValue.Start();
             maximalValue.Start();
-            averageValue.Start();
+            Thread saveResult = new Thread(()=>
+            {
+                string textToSave = $"______{DateTime.Now}_______\n Values: ";
+                foreach (var item in list)
+                    textToSave += $"{item} ";
+                textToSave += $"\nMin: {min};\nMax: {max};\nAvg: {avg}";
+                if (!File.Exists(Directory.GetCurrentDirectory() + @"\" + "log.txt"))
+                    File.Create(Directory.GetCurrentDirectory() + @"\" + "log.txt").Close();
+                File.WriteAllText(Directory.GetCurrentDirectory() + @"\" + "log.txt", textToSave);
+            });
+            saveResult.Start();
             Console.ReadKey();
         }
     }
