@@ -118,7 +118,7 @@ namespace ConsoleApp4
             int[] arr = new int[3];
 
             arr[0] = min;
-            arr[1] = someVal;
+            arr[1] = elemsCount;
 
             for(int i =0;i<count;i++)
                 Console.Write($"Thread {i+1}|");
