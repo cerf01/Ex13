@@ -114,7 +114,7 @@ namespace ConsoleApp4
 
         private static void task3(int count, int min, int max) 
         {
-            int someVal = max /count;
+            int elemsCount = max /count;
             int[] arr = new int[3];
 
             arr[0] = min;
@@ -127,8 +127,8 @@ namespace ConsoleApp4
 
             for (int i = 0; i < count; i++)
             {
-                arr[0] = min + someVal * i;
-                arr[1] = min + someVal * (i + 1);
+                arr[0] = min + elemsCount * i;
+                arr[1] = min + elemsCount * (i + 1);
                 arr[2] = i;
 
                 task1_2(arr);
